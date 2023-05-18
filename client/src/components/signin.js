@@ -9,7 +9,7 @@ import axios from "axios";
 import ThemeContext from "./themeContext";
 import { useGoogleLogin } from "@react-oauth/google";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://quitmate-api.onrender.com";
 axios.defaults.withCredentials = true;
 
 const Button = buttonAndSeparator.GoogleButton;
@@ -26,20 +26,24 @@ function SignIn() {
   const [signedOut, setSignedOut] = useState(false);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/signout").then(() => setSignedOut(true));
+    axios
+      .get("https://quitmate-api.onrender.com/signout")
+      .then(() => setSignedOut(true));
   }, []);
 
   const signin = useGoogleLogin({
     onSuccess: (response) => {
       const token = response["access_token"];
       console.log(response);
-      axios.post(`http://127.0.0.1:5000/signin`, { token }).then((response) => {
-        let errorMsg = response.data;
-        setError(errorMsg);
-        if (errorMsg === "") {
-          setRedirectMain(true);
-        }
-      });
+      axios
+        .post(`https://quitmate-api.onrender.com/signin`, { token })
+        .then((response) => {
+          let errorMsg = response.data;
+          setError(errorMsg);
+          if (errorMsg === "") {
+            setRedirectMain(true);
+          }
+        });
     },
   });
 
@@ -56,7 +60,7 @@ function SignIn() {
   function sendForm(e) {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/signin", { username, password })
+      .post("https://quitmate-api.onrender.com/signin", { username, password })
       .then((response) => {
         let errorMsg = response.data;
         setError(errorMsg);

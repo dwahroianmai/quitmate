@@ -31,7 +31,11 @@ function Password({ f }) {
   function changePassword(e) {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/changepassword", { current, newP, confirm })
+      .post("https://quitmate-api.onrender.com/changepassword", {
+        current,
+        newP,
+        confirm,
+      })
       .then((res) => {
         setMessage(res.data);
         setSent(true);

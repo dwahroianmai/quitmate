@@ -7,7 +7,7 @@ import axios from "axios";
 import LeftPart from "./leftPart";
 import ThemeContext from "./themeContext";
 
-axios.defaults.baseURL = "http://127.0.0.1:5000";
+axios.defaults.baseURL = "https://quitmate-api.onrender.com";
 axios.defaults.withCredentials = true;
 
 function SignUp() {
@@ -70,7 +70,7 @@ function SignUp() {
   function sendForm(e) {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/signup", {
+      .post("https://quitmate-api.onrender.com/signup", {
         username,
         password,
         passwordConfirm,

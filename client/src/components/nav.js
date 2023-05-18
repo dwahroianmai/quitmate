@@ -28,7 +28,7 @@ function Nav({ settings }) {
   }, []);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/authorized").then((res) => {
+    axios.get("https://quitmate-api.onrender.com/authorized").then((res) => {
       setAuth(res.data["authorized"]);
       setName(res["data"]["username"]);
       if (res.data["authorized"]) {

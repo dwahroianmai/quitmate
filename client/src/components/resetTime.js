@@ -36,16 +36,20 @@ function Time({ f }) {
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-      axios.post("http://127.0.0.1:5000/resettime", { time: now }).then(() => {
+      axios
+        .post("https://quitmate-api.onrender.com/resettime", { time: now })
+        .then(() => {
+          setMessage("Time was reset.");
+          setSet(true);
+        });
+      return;
+    }
+    axios
+      .post("https://quitmate-api.onrender.com/resettime", { time })
+      .then(() => {
         setMessage("Time was reset.");
         setSet(true);
       });
-      return;
-    }
-    axios.post("http://127.0.0.1:5000/resettime", { time }).then(() => {
-      setMessage("Time was reset.");
-      setSet(true);
-    });
   }
 
   function check() {

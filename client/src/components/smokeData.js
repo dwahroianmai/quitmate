@@ -5,7 +5,7 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 import ThemeContext from "./themeContext";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://quitmate-api.onrender.com";
 axios.defaults.withCredentials = true;
 
 function SmokeData() {
@@ -37,12 +37,14 @@ function SmokeData() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/authorized", { withCredentials: true })
+      .get("https://quitmate-api.onrender.com/authorized", {
+        withCredentials: true,
+      })
       .then((response) => setUsername(response.data["username"]));
   }, []);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/userdata").then((res) => {
+    axios.get("https://quitmate-api.onrender.com/userdata").then((res) => {
       if (!res.data["empty"]) {
         setSent(true);
       }
@@ -81,7 +83,7 @@ function SmokeData() {
         .slice(0, 19)
         .replace("T", " ");
       axios
-        .post("http://127.0.0.1:5000/userdata", {
+        .post("https://quitmate-api.onrender.com/userdata", {
           date: now,
           day,
           pack,
@@ -92,7 +94,7 @@ function SmokeData() {
         .then(setSent(true));
     }
     axios
-      .post("http://127.0.0.1:5000/userdata", {
+      .post("https://quitmate-api.onrender.com/userdata", {
         date,
         day,
         pack,

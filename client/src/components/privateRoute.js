@@ -7,11 +7,13 @@ function PrivateComponent({ component }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/authorized").then((response) => {
-      let respAuth = response.data["authorized"];
-      setAuthorized(respAuth);
-      setLoading(true);
-    });
+    axios
+      .get("https://quitmate-api.onrender.com/authorized")
+      .then((response) => {
+        let respAuth = response.data["authorized"];
+        setAuthorized(respAuth);
+        setLoading(true);
+      });
   }, []);
 
   if (!loading) {

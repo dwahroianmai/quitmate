@@ -52,7 +52,10 @@ function Currency({ f }) {
   function resetCurrency(e) {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/resetcurrency", { currency, symbol })
+      .post("https://quitmate-api.onrender.com/resetcurrency", {
+        currency,
+        symbol,
+      })
       .then(() => {
         setMessage("Currency was changed.");
         setChanged(true);
