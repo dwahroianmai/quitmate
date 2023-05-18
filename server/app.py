@@ -6,8 +6,13 @@ import mysql.connector
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 
+# DEV
 # server_url = "http://127.0.0.1:5000"
 # react_url  = "http://127.0.0.1:3000"
+
+# PROD
+# backend url = "https://quitmate-api.onrender.com"
+# frontend url = "https://quitmate.onrender.com"
 
 app = Flask(__name__)
 
@@ -37,7 +42,7 @@ cursor = cnx.cursor(buffered=True)
 # set up the headers, so the cors would work
 @app.after_request
 def add_cors_headers(response):
-    response.headers.add("Access-Control-Allow-Origin", "http://127.0.0.1:3000")
+    response.headers.add("Access-Control-Allow-Origin", "https://quitmate.onrender.com")
     response.headers.add("Access-Control-Allow-Headers", "Content-Type")
     response.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
     response.headers.add("Access-Control-Allow-Credentials", "true")
@@ -453,4 +458,4 @@ def google_user():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
