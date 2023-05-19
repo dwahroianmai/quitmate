@@ -2,9 +2,12 @@ import os
 import requests
 from flask import Flask, request, session
 from flask_session import Session
-import mysql.connector
+
+# import mysql.connector
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
+from google.cloud.sql.connector import Connector
+import pymysql
 
 # server_url = "http://127.0.0.1:5000"
 # react_url  = "http://127.0.0.1:3000"
@@ -21,17 +24,73 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 # cors
 app.config["SESSION_COOKIE_SAMESITE"] = "None"
 app.config["SESSION_COOKIE_SECURE"] = True
-app.config["SESSION_COOKIE_NAME"] = "cookie_name"
 
 Session(app)
 CORS(app, supports_credentials=True)
 
 # connect the database
 db_password = os.getenv("DB_PASSWORD")
-cnx = mysql.connector.connect(
-    user="root", password=db_password, host="localhost", database="quitmate"
+# cnx = mysql.connector.connect(
+#     user="root", password=db_password, host="localhost", database="quitmate"
+# )
+# cursor = cnx.cursor(buffered=True)
+
+
+connector = Connector()
+
+
+def getconn() -> pymysql.connections.Connection:
+    conn: pymysql.connections.Connection = connector.connect(
+        "quitmate-385418:europe-central2:quitmate-mysql",
+        "pymysql",
+        user="root",
+        password=db_password,
+        db="quitmate",
+    )
+    return conn
+
+
+cnx = getconn()
+
+cursor = cnx.cursor()
+
+create_table_query = """
+CREATE TABLE IF NOT EXISTS my_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    age INT,
+    email VARCHAR(255)
 )
-cursor = cnx.cursor(buffered=True)
+"""
+
+cursor.execute(create_table_query)
+cnx.commit()
+
+cursor.close()
+
+
+def getconn() -> pymysql.connections.Connection:
+    conn: pymysql.connections.Connection = connector.connect(
+        "quitmate-385418:europe-central2:quitmate-mysql",
+        "pymysql",
+        user="root",
+        password=db_password,
+        db="quitmate",
+    )
+    return conn
+
+
+cnx = getconn()
+
+cursor = cnx.cursor()
+
+row = """
+    SELECT * FROM my_table
+"""
+cursor.execute(row)
+result = cursor.fetchall()
+print(result)
+cnx.close()
 
 
 # set up the headers, so the cors would work

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "quitmate-385418",
+  "private_key_id": "14f79cfcd4469d02c3dca9b30ecebb58fd55a42e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCgkALG442iFfGX\nto6V2FCkUtZXgWZA8vxc3PSZL8M3PBxq6AdaW4XpKX/6Tl9sxZXlB3KYGgFihJ1v\nh7daW8L/8t0QN/4GAjQijEYWg+DPG9CBYcJ+/hfVM/GS+0UWbZATCp9l0roSZOgr\ndgI4OODgr37LI/86Q808oRl29ewkkxBLh/gzT/XYorsyVy00J275wl4GFdzYnavH\niUt51983Q568O54sfkOYbP7ZGS9Uw824p3q32gqkEhHqhhDI1D/X1GygJwMYrM0s\nVPQBqnUhmhjWqi5lB3ZnGF0ts4//n2mEkEn6FpK9kJxnZwwkg33xqtBBQTf9kVov\noqSJ24g3AgMBAAECggEAPE3qZRXZP7vbKd6cjgYZP6aHL4V/yLwacaxhR9mrCedP\nSw3LmTHPyUNXeEUQTROm2UbjUOJPi9eAJAAGqu7U/fmS8sD87PfN6f3iYxl0CYWK\nWdXETZsUi3R/cnNiPuq2lphCRuWPElKI6q3fZotiVrFDP3vNI+6MOo3NOSNjZlan\nfo5jgTDg25ws7AHu28cw9PQfO1XLDHlUh1yCROhGOKo61eFX9174b4rCI00OE/a1\nEzkmrOez29d2n8+C6/on0e5m+rmgEq5L5YW5IkQrDuGiq2EgZZtkX8/i+5jhdUMZ\nZJ/rfJ8PgNF7P0tempxDp5l5I/Pgu1Y1OB/Zseh5CQKBgQDSP0k/q0nWj/j4xklK\n97cNYPpyXLQCRqq9ziF7x2I73cDSWXdHOB67pB5Yvsyy118GflP1M5dmpeBo1vu2\nFBOvYGAJ7GNOvJMckHT9NPOFIeWEapjxuEGTGyCQAIXMmRSmrwPMNl3gtoprwfS1\n5+NqCKlbitZvMO5onc9VHaiKmQKBgQDDgNRHDqcb7LU3E3MjUcZb0rXPw1oKA4sH\nopqFrbNuOaUKptXlp+ezMZmM6uhPp1MzgcDwkoKVpSnW+GeKttzYVRGVOykgOVv4\nfN1qEoN5G0ED90tHU+DEkRS4yrrxTRYmhPlN1CtOZfgnbxJ/nBYlL8YROS5LO8E1\nSHM3xlO7TwKBgFxbapzqbKwxYIg/6nBhMutQn5PfP0AEtPpd832BT5jGx+5fWLNT\nZsS8yovnfNpPG7Ipik4bVLXFxjenwLjyRtdyeZ3CVrl+wwz4NDwKp7Li+gTaIseE\nTmIFt58qa5w93sF9/igV9dVBurqtYAcMj2zD00mgSqRblU8li69zMNd5AoGAXMV2\ndh2a6OJjf7YoDduRMCOGCQgfYt8Zi0762nJ50dVi3vIaUDdj+KGRxs/1206AadGp\nt78eXlqYxxzrLWTm2XVMua7wLg1p+jlubBZK8x4etP4VZ8yCvWRHHAV/vl+hIjg5\ngVgsELDMmBHaCloMHCtWZvfmYucBIQK3QgFH3HsCgYA/HR+KfBID4cEp0SKWhvn+\nEjzB85kE+cFyvdoYaNcnynK9tiASSZuimESy6CE2vQ34ZfRIncigLOBsQ/u5AkgI\n28CqtL0+uOf5PB/evPcG0UeZb78mqSHmAcBd/fc01CR3j16ncPEnqdB/zcGGJA5O\netsc+83ayqyeaxn8x5m5Kw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "quitmate-sa@quitmate-385418.iam.gserviceaccount.com",
+  "client_id": "100660446332392954285",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/quitmate-sa%40quitmate-385418.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
