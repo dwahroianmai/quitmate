@@ -43,7 +43,7 @@ def getconn() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
         "quitmate-385418:europe-central2:quitmate-mysql",
         "pymysql",
-        user="root",
+        user="darinap",
         password=db_password,
         db="quitmate",
     )
