@@ -2,7 +2,8 @@ import os
 import requests
 from flask import Flask, request, session
 from flask_session import Session
-import mysql.connector
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 
@@ -10,6 +11,15 @@ from flask_cors import CORS
 # react_url  = "http://127.0.0.1:3000"
 
 app = Flask(__name__)
+
+# add db
+db_uri = os.getenv("DB_URI")
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "postgresql://admin:ZoVToFtFiAatku2lH3WHwE7qfe43XCai@dpg-chlmpm67avj217f7b6gg-a.frankfurt-postgres.render.com/quitmate"
+
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 # configure app
 # controls permanent session storage
@@ -26,12 +36,71 @@ app.config["SESSION_COOKIE_NAME"] = "cookie_name"
 Session(app)
 CORS(app, supports_credentials=True)
 
-# connect the database
-db_password = os.getenv("DB_PASSWORD")
-cnx = mysql.connector.connect(
-    user="root", password=db_password, host="localhost", database="quitmate"
-)
-cursor = cnx.cursor(buffered=True)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    hash = db.Column(db.String(1000), nullable=False, unique=True)
+    google_id = db.Column(db.String(1000))
+
+    def __init__(self, username, hash, google_id):
+        self.username = username
+        self.hash = hash
+        self.google_id = google_id
+
+
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "username", "hash", "google_id")
+
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+
+class UserData(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    last_smoked = db.Column(db.DateTime, nullable=False)
+    cig_daily = db.Column(db.Integer, nullable=False)
+    pack_price = db.Column(db.Integer, nullable=False)
+    cig_in_pack = db.Column(db.Integer, nullable=False)
+    currency = db.Column(db.String(3), nullable=False)
+    currency_sign = db.Column(db.String(1), nullable=False)
+
+    def __init__(
+        self,
+        user_id,
+        last_smoked,
+        cig_daily,
+        pack_price,
+        cig_in_pack,
+        currency,
+        currency_sign,
+    ):
+        self.user_id = user_id
+        self.last_smoked = last_smoked
+        self.cig_daily = cig_daily
+        self.pack_price = pack_price
+        self.cig_in_pack = cig_in_pack
+        self.currency = currency
+        self.currency_sign = currency_sign
+
+
+class UserDataSchema(ma.Schema):
+    class Meta:
+        fields = (
+            "user_id",
+            "last_smoked",
+            "cig_daily",
+            "pack_price",
+            "cig_in_pack",
+            "currency",
+            "currency_sign",
+        )
+
+
+userdata_schema = UserDataSchema()
+usersdata_schema = UserDataSchema(many=True)
 
 
 # set up the headers, so the cors would work
