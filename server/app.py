@@ -202,20 +202,10 @@ def signout():
 @app.route("/authorized")
 def is_authorized():
     try:
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
-        get_username = "SELECT username FROM users WHERE id = %s"
-
         if "user_id" in session:
-            cursor.execute(get_username, (session["user_id"],))
-            username = cursor.fetchall()
-            cursor.close()
-
+            user = db.session.query(User).filter(User.id == session["user_id"]).first()
             authorized = session["user_id"] is not None
-            return {"authorized": authorized, "username": username}
+            return {"authorized": authorized, "username": user.username}
         else:
             return {"authorized": False}
     except Exception as e:
