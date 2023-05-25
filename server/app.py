@@ -131,7 +131,7 @@ def signin():
                     db.session.query(User).filter(User.google_id == google_id).first()
                 )
 
-                if google_user == None:
+                if google_user is None:
                     new_google_user = User(
                         username=google_username, hash=None, google_id=google_id
                     )
@@ -146,7 +146,7 @@ def signin():
         user = db.session.query(User).filter(User.username == username).first()
 
         # if user doesn't exist or the password is incorrect
-        if user == None or not check_password_hash(user.hash, password):
+        if user is None or not check_password_hash(user.hash, password):
             return "Oops! Incorrect username or password."
 
         # set up the session
@@ -246,7 +246,7 @@ def userdata():
                 .first()
             )
 
-            return {"empty": data == None}
+            return {"empty": data is None}
     except Exception as e:
         return f"Something went wrong, /userdata, {e}"
 
@@ -428,20 +428,8 @@ def remove_user():
 # checks if user has signed in with google
 @app.route("/ifgoogleuser")
 def google_user():
-    cnx = mysql.connector.connect(
-        user="root", password=db_password, host="localhost", database="quitmate"
-    )
-    cursor = cnx.cursor(buffered=True)
-
-    google_id = "SELECT google_id FROM users WHERE id = %s"
-
-    cursor.execute(google_id, (session["user_id"],))
-    result = cursor.fetchall()
-    cnx.close()
-
-    if result[0][0] is None:
-        return {"google_user": False}
-    return {"google_user": True}
+    google_user = db.session.query(User).filter(User.id == session["user_id"]).first()
+    return {"google_user": not google_user.google_id is None}
 
 
 if __name__ == "__main__":
