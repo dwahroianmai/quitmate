@@ -339,35 +339,17 @@ def change_password():
         new_password = request.json.get("newP")
         confirm_password = request.json.get("confirm")
 
-        get_hash = "SELECT hash FROM users WHERE id = %s"
+        user = db.session.query(User).filter(User.id == session["user_id"]).first()
+        hash = user.hash
 
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
-        cursor.execute(get_hash, (session["user_id"],))
-        result = cursor.fetchall()
-        cursor.close()
-
-        if not check_password_hash(result[0][0], current_password):
+        if not check_password_hash(hash, current_password):
             return "Your current password is incorrect."
 
         if new_password != confirm_password:
             return "Please, enter your current password and the new password."
 
-        update_password = "UPDATE users SET hash = %s WHERE id = %s"
-
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
-        cursor.execute(
-            update_password, (generate_password_hash(new_password), session["user_id"])
-        )
-        cnx.commit()
-        cursor.close()
+        user.hash = generate_password_hash(new_password)
+        db.session.commit()
 
         return "Password was changed."
     except Exception as e:
