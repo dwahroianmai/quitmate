@@ -255,14 +255,22 @@ def userdata():
 @app.route("/data")
 def data():
     try:
-        db_data = (
+        data = (
             db.session.query(UserData)
             .filter(UserData.user_id == session["user_id"])
             .first()
         )
-        data = db_data.__dict__
-        data.pop("_sa_instance_state")
-        return {"data": jsonify(data)}
+        return {
+            "data": [
+                data.user_id,
+                data.last_smoked,
+                data.cig_daily,
+                data.pack_price,
+                data.cig_in_pack,
+                data.currency,
+                data.currency_sign,
+            ]
+        }
     except Exception as e:
         return f"Something went wrong, /data, {e}"
 
