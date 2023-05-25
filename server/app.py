@@ -216,12 +216,6 @@ def is_authorized():
 def userdata():
     try:
         if request.method == "POST":
-            cnx = mysql.connector.connect(
-                user="root", password=db_password, host="localhost", database="quitmate"
-            )
-            cursor = cnx.cursor(buffered=True)
-
-            user_id = session["user_id"]
             last_smoked = request.json["date"]
             cig_daily = request.json["day"]
             cig_in_pack = request.json["pack"]
@@ -229,53 +223,30 @@ def userdata():
             currency = request.json["currency"]
             symbol = request.json["symbol"]
 
-            get_id = "SELECT id FROM users WHERE google_id = %s"
-            cursor.execute(get_id, (session["user_id"],))
-            result = cursor.fetchall()
-
-            if len(result) != 0:
-                user_id = result[0][0]
-
-            cnx.close()
-
-            cnx = mysql.connector.connect(
-                user="root", password=db_password, host="localhost", database="quitmate"
-            )
-            cursor = cnx.cursor(buffered=True)
-
-            insert_into = (
-                "INSERT INTO userdata (user_id, last_smoked, cig_daily, pack_price, cig_in_pack, currency, currency_sign) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            new_data = UserData(
+                user_id=session["user_id"],
+                last_smoked=last_smoked,
+                cig_daily=cig_daily,
+                cig_in_pack=cig_in_pack,
+                pack_price=pack_price,
+                currency=currency,
+                currency_sign=symbol,
             )
 
-            cursor.execute(
-                insert_into,
-                (
-                    user_id,
-                    last_smoked,
-                    cig_daily,
-                    pack_price,
-                    cig_in_pack,
-                    currency,
-                    symbol,
-                ),
-            )
-            cnx.commit()
-            cursor.close()
+            db.session.add(new_data)
+            db.session.commit()
+
             return "Data was added"
 
         else:
-            # check if data has already been added
-            cnx = mysql.connector.connect(
-                user="root", password=db_password, host="localhost", database="quitmate"
+            # check if data had already been added
+            data = (
+                db.session.query(UserData)
+                .filter(UserData.user_id == session["user_id"])
+                .first()
             )
-            cursor = cnx.cursor(buffered=True)
 
-            select_data = "SELECT * FROM userdata WHERE user_id = %s"
-            cursor.execute(select_data, (session["user_id"],))
-            data = cursor.fetchall()
-            cursor.close()
-            empty = len(data) == 0
+            empty = data == None
             return {"empty": empty}
     except Exception as e:
         return f"Something went wrong, /userdata, {e}"
