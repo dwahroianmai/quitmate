@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, session
+from flask import Flask, request, session, jsonify
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -255,17 +255,14 @@ def userdata():
 @app.route("/data")
 def data():
     try:
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
+        db_data = (
+            db.session.query(UserData)
+            .filter(UserData.user_id == session["user_id"])
+            .first()
         )
-        cursor = cnx.cursor(buffered=True)
-
-        select_data = "SELECT * FROM userdata WHERE user_id = %s"
-
-        cursor.execute(select_data, (session["user_id"],))
-        data = cursor.fetchall()
-        cursor.close()
-        return {"data": data}
+        data = db_data.__dict__
+        data.pop("_sa_instance_state")
+        return {"data": jsonify(data)}
     except Exception as e:
         return f"Something went wrong, /data, {e}"
 
