@@ -360,26 +360,17 @@ def change_password():
 @app.route("/removeuser")
 def remove_user():
     try:
-        delete_userdata = "DELETE FROM userdata WHERE user_id = %s"
-        delete_user = "DELETE FROM users WHERE id = %s"
-
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
+        user = db.session.query(User).filter(User.id == session["user_id"]).first()
+        user_data = (
+            db.session.query(UserData)
+            .filter(UserData.user_id == session["user_id"])
+            .first()
         )
-        cursor = cnx.cursor(buffered=True)
 
-        cursor.execute(delete_userdata, (session["user_id"],))
-        cnx.commit()
-        cursor.close()
+        db.session.delete(user)
+        db.session.delete(user_data)
+        db.session.commit()
 
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
-        cursor.execute(delete_user, (session["user_id"],))
-        cnx.commit()
-        cursor.close()
         session.clear()
         return "User was deleted."
     except Exception as e:
