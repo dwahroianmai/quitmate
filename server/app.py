@@ -246,8 +246,7 @@ def userdata():
                 .first()
             )
 
-            empty = data == None
-            return {"empty": empty}
+            return {"empty": data == None}
     except Exception as e:
         return f"Something went wrong, /userdata, {e}"
 
