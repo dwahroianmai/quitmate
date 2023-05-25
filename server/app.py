@@ -14,10 +14,8 @@ app = Flask(__name__)
 
 # add db
 db_uri = os.getenv("DB_URI")
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://admin:ZoVToFtFiAatku2lH3WHwE7qfe43XCai@dpg-chlmpm67avj217f7b6gg-a.frankfurt-postgres.render.com/quitmate"
-
+# need to export it, .flaskenv doesn't work
+app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
@@ -31,12 +29,12 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 # cors
 app.config["SESSION_COOKIE_SAMESITE"] = "None"
 app.config["SESSION_COOKIE_SECURE"] = True
-app.config["SESSION_COOKIE_NAME"] = "cookie_name"
 
 Session(app)
 CORS(app, supports_credentials=True)
 
 
+# database
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
@@ -116,11 +114,6 @@ def add_cors_headers(response):
 @app.route("/signin", methods=["POST"])
 def signin():
     try:
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
         username = request.json.get("username")
         password = request.json.get("password")
 
@@ -134,44 +127,30 @@ def signin():
                 )
                 google_id = response.json()["metadata"]["sources"][0]["id"]
                 google_username = response.json()["names"][0]["displayName"]
-                get_user = "SELECT * FROM users WHERE google_id = %s"
+                google_user = (
+                    db.session.query(User).filter(User.google_id == google_id).first()
+                )
 
-                cursor.execute(get_user, (google_id,))
-                google_user = cursor.fetchall()
-                cursor.close()
-
-                if len(google_user) == 0:
-                    cnx = mysql.connector.connect(
-                        user="root",
-                        password=db_password,
-                        host="localhost",
-                        database="quitmate",
+                if google_user == None:
+                    new_google_user = User(
+                        username=google_username, hash=None, google_id=google_id
                     )
-                    cursor = cnx.cursor(buffered=True)
+                    db.session.add(new_google_user)
+                    db.session.commit()
 
-                    add_google_user = (
-                        "INSERT INTO users (google_id, username) VALUES (%s, %s)"
-                    )
-                    cursor.execute(add_google_user, (google_id, google_username))
-                    cnx.commit()
-                    cursor.close()
-
-                session["user_id"] = google_user[0][0]
+                session["user_id"] = google_user.id
                 return ""
 
             return "Oops! Username or password field is blank."
 
-        select_user = "SELECT * FROM users WHERE username = %s"
-        username = cursor.execute(select_user, (username,))
-        result = cursor.fetchall()
-        cursor.close()
+        user = db.session.query(User).filter(User.username == username).first()
 
         # if user doesn't exist or the password is incorrect
-        if len(result) != 1 or not check_password_hash(result[0][2], password):
+        if user == None or not check_password_hash(user.hash, password):
             return "Oops! Incorrect username or password."
 
         # set up the session
-        session["user_id"] = result[0][0]
+        session["user_id"] = user.id
         return ""
     except Exception as e:
         print(e)
