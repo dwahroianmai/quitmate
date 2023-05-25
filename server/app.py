@@ -38,7 +38,7 @@ CORS(app, supports_credentials=True)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
-    hash = db.Column(db.String(1000), nullable=False, unique=True)
+    hash = db.Column(db.String(1000), unique=True)
     google_id = db.Column(db.String(1000))
 
     def __init__(self, username, hash, google_id):
@@ -137,6 +137,12 @@ def signin():
                     )
                     db.session.add(new_google_user)
                     db.session.commit()
+
+                    google_user = (
+                        db.session.query(User)
+                        .filter(User.google_id == google_id)
+                        .first()
+                    )
 
                 session["user_id"] = google_user.id
                 return ""
