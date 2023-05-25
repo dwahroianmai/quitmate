@@ -159,11 +159,6 @@ def signin():
 
 @app.route("/signup", methods=["POST"])
 def signup():
-    cnx = mysql.connector.connect(
-        user="root", password=db_password, host="localhost", database="quitmate"
-    )
-    cursor = cnx.cursor(buffered=True)
-
     username = request.json.get("username")
     password = request.json.get("password")
     password_confirm = request.json.get("passwordConfirm")
@@ -176,29 +171,18 @@ def signup():
     if password != password_confirm:
         return "Oops! Your passwords do not match."
 
-    get_user = "SELECT * FROM users WHERE username = %s"
+    user = db.session.query(User).filter(username == username).first()
 
-    # check if user already exists
-    existing_user = cursor.execute(get_user, (username,))
-    result = cursor.fetchall()
-    cursor.close()
-
-    if len(result) != 0:
+    if user:
         return "Oops! User with this username already exists."
-
-    cnx = mysql.connector.connect(
-        user="root", password=db_password, host="localhost", database="quitmate"
-    )
-    cursor = cnx.cursor(buffered=True)
-
-    add_user = "INSERT INTO users (username, hash) VALUES (%s, %s)"
-    password_hash = generate_password_hash(password)
 
     # add user to the database
     try:
-        cursor.execute(add_user, (username, password_hash))
-        cnx.commit()
-        cursor.close()
+        new_user = User(
+            username=username, hash=generate_password_hash(password), google_id=None
+        )
+        db.session.add(new_user)
+        db.session.commit()
         return ""
 
     except Exception as e:
