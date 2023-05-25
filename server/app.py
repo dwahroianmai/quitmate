@@ -271,24 +271,15 @@ def data():
 @app.route("/resettime", methods=["POST"])
 def reset_time():
     try:
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
         new_time = request.json["time"]
-
-        update = "UPDATE userdata SET last_smoked = %s WHERE user_id = %s"
-
-        cursor.execute(
-            update,
-            (
-                new_time,
-                session["user_id"],
-            ),
+        user_data = (
+            db.session.query(UserData)
+            .filter(UserData.user_id == session["user_id"])
+            .first()
         )
-        cnx.commit()
-        cursor.close()
+        user_data.last_smoked = new_time
+        db.session.commit()
+
         return "Time was reset."
     except Exception as e:
         return f"Something went wrong, /resettime, {e}"
