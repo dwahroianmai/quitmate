@@ -171,7 +171,7 @@ def signup():
     if password != password_confirm:
         return "Oops! Your passwords do not match."
 
-    user = db.session.query(User).filter(username == username).first()
+    user = db.session.query(User).filter(User.username == username).first()
 
     if user:
         return "Oops! User with this username already exists."
@@ -305,44 +305,27 @@ def reset_currency():
         new_currency = request.json.get("currency")
         symbol = request.json.get("symbol")
 
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
+        data = (
+            db.session.query(UserData)
+            .filter(UserData.user_id == session["user_id"])
+            .first()
         )
-        cursor = cnx.cursor(buffered=True)
-
-        get_old_data = "SELECT pack_price, currency FROM userdata WHERE user_id = %s"
-
-        cursor.execute(get_old_data, (session["user_id"],))
-        result = cursor.fetchall()
-        cursor.close()
-
-        price = result[0][0]
-        old_currency = result[0][1]
+        price = data.pack_price
+        currency = data.currency
 
         response = requests.get(
-            f"https://api.apilayer.com/fixer/convert?to={new_currency}&from={old_currency}&amount={price}",
+            f"https://api.apilayer.com/fixer/convert?to={new_currency}&from={currency}&amount={price}",
             headers={"apikey": api_key},
         )
 
-        data = response.json()
-        new_price = int(data["result"])
+        api_data = response.json()
+        new_price = int(api_data["result"])
 
-        update_currency = (
-            "UPDATE userdata "
-            "SET pack_price = %s, currency = %s, currency_sign = %s "
-            "WHERE user_id = %s"
-        )
+        data.pack_price = new_price
+        data.currency = new_currency
+        data.currency_sign = symbol
+        db.session.commit()
 
-        cnx = mysql.connector.connect(
-            user="root", password=db_password, host="localhost", database="quitmate"
-        )
-        cursor = cnx.cursor(buffered=True)
-
-        cursor.execute(
-            update_currency, (new_price, new_currency, symbol, session["user_id"])
-        )
-        cnx.commit()
-        cursor.close()
         return "OKAY"
     except Exception as e:
         return f"Something went wrong, /resetcurrency, {e}"
