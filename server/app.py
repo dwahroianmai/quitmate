@@ -63,7 +63,7 @@ class UserData(db.Model):
     pack_price = db.Column(db.Integer, nullable=False)
     cig_in_pack = db.Column(db.Integer, nullable=False)
     currency = db.Column(db.String(3), nullable=False)
-    currency_sign = db.Column(db.String(1), nullable=False)
+    currency_sign = db.Column(db.String(3), nullable=False)
 
     def __init__(
         self,
@@ -238,9 +238,13 @@ def userdata():
                 currency=currency,
                 currency_sign=symbol,
             )
-
-            db.session.add(new_data)
-            db.session.commit()
+            print(last_smoked)
+            try:
+                db.session.add(new_data)
+                db.session.commit()
+                print("added")
+            except Exception as e:
+                print(e)
 
             return "Data was added"
 
@@ -252,7 +256,8 @@ def userdata():
                 .first()
             )
 
-            return {"empty": data is None}
+            empty = data is None
+            return {"empty": empty}
     except Exception as e:
         return f"Something went wrong, /userdata, {e}"
 
