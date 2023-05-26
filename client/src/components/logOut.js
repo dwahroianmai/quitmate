@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 function LogOut() {
   axios
-    .get("http://127.0.0.1:5000/signout")
+    .get("https://quitmate-api.onrender.com/signout")
     .then((response) => console.log(response));
 
   return <Navigate to="/signin" />;
