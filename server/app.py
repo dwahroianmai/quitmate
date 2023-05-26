@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, session, jsonify
+from flask import Flask, request, session
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
