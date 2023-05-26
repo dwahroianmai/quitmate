@@ -7,9 +7,6 @@ from flask_marshmallow import Marshmallow
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 
-# server_url = "http://127.0.0.1:5000"
-# react_url  = "http://127.0.0.1:3000"
-
 app = Flask(__name__)
 
 # add db
@@ -104,7 +101,7 @@ usersdata_schema = UserDataSchema(many=True)
 # set up the headers, so the cors would work
 @app.after_request
 def add_cors_headers(response):
-    response.headers.add("Access-Control-Allow-Origin", "http://127.0.0.1:3000")
+    response.headers.add("Access-Control-Allow-Origin", "https://quitmate.onrender.com")
     response.headers.add("Access-Control-Allow-Headers", "Content-Type")
     response.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
     response.headers.add("Access-Control-Allow-Credentials", "true")
@@ -396,4 +393,4 @@ def google_user():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
