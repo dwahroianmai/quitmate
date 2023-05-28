@@ -16,7 +16,7 @@ function Health() {
   useEffect(() => {
     axios
       .get("https://quitmate-api.onrender.com/data")
-      .then((res) => setData(res.data["data"][0]));
+      .then((res) => setData(res.data["data"]));
   }, []);
 
   useEffect(() => {
