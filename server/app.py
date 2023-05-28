@@ -162,7 +162,8 @@ def signin():
 
 @app.route("/demo-user")
 def demo():
-    return {"demo": "superStrongPassword1@"}
+    demo_password = os.getenv("DEMO_P")
+    return {"demo": demo_password}
 
 
 @app.route("/signup", methods=["POST"])
