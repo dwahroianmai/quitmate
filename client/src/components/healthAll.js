@@ -14,10 +14,9 @@ function Health() {
   );
 
   useEffect(() => {
-    axios.get("https://quitmate-api.onrender.com/data").then((res) => {
-      console.log(res);
-      setData(res.data["data"][0]);
-    });
+    axios
+      .get("https://quitmate-api.onrender.com/data")
+      .then((res) => setData(res.data["data"][0]));
   }, []);
 
   useEffect(() => {
@@ -29,14 +28,12 @@ function Health() {
   });
 
   function timePassed(time, usersTime) {
-    console.log(time, usersTime);
     let percent = time / 100;
     let usersPercent = usersTime / percent;
     return usersPercent;
   }
 
   function ifHundred(percent) {
-    console.log(percent);
     if (percent >= 100) {
       return 100;
     }
