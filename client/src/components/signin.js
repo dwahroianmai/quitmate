@@ -71,8 +71,10 @@ function SignIn() {
   }
 
   function demo() {
-    setUsername("demo_user");
-    setPassword("superStrongPassword1@");
+    axios.get("https://quitmate-api.onrender.com/demo-user").then((res) => {
+      setUsername("demo_user");
+      setPassword(res.data["demo"]);
+    });
   }
 
   if (redirectMain) {

@@ -160,6 +160,11 @@ def signin():
         return f"Oops! We are sorry, something went wrong"
 
 
+@app.route("/demo-user")
+def demo():
+    return {"demo": "superStrongPassword1@"}
+
+
 @app.route("/signup", methods=["POST"])
 def signup():
     username = request.json.get("username")
