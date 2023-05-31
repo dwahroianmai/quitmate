@@ -1,5 +1,3 @@
 .flaskenv
-Pipfile
 /__pycache__
 /flask_session
-Pipfile.lock
