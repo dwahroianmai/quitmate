@@ -37,19 +37,17 @@ function Time({ f }) {
         .slice(0, 19)
         .replace("T", " ");
       axios
-        .post("https://quitmate-api.onrender.com/resettime", { time: now })
+        .post("https://quitmate-api.fly.dev/resettime", { time: now })
         .then(() => {
           setMessage("Time was reset.");
           setSet(true);
         });
       return;
     }
-    axios
-      .post("https://quitmate-api.onrender.com/resettime", { time })
-      .then(() => {
-        setMessage("Time was reset.");
-        setSet(true);
-      });
+    axios.post("https://quitmate-api.fly.dev/resettime", { time }).then(() => {
+      setMessage("Time was reset.");
+      setSet(true);
+    });
   }
 
   function check() {

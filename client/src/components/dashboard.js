@@ -25,7 +25,7 @@ function Dashboard() {
 
   // checks if there's already data in the db
   useEffect(() => {
-    axios.get("https://quitmate-api.onrender.com/userdata").then((res) => {
+    axios.get("https://quitmate-api.fly.dev/userdata").then((res) => {
       setEmpty(res.data["empty"]);
       setLoading(true);
     });
@@ -33,7 +33,7 @@ function Dashboard() {
 
   // gets user's data from db
   useEffect(() => {
-    axios.get("https://quitmate-api.onrender.com/data").then((res) => {
+    axios.get("https://quitmate-api.fly.dev/data").then((res) => {
       console.log(res);
       setData(res.data["data"]);
     });

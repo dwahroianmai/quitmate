@@ -52,7 +52,7 @@ function Currency({ f }) {
   function resetCurrency(e) {
     e.preventDefault();
     axios
-      .post("https://quitmate-api.onrender.com/resetcurrency", {
+      .post("https://quitmate-api.fly.dev/resetcurrency", {
         currency,
         symbol,
       })

@@ -18,7 +18,7 @@ function Settings() {
   const [ifGoogleUser, setIfGoogleUser] = useState(null);
 
   useEffect(() => {
-    axios.get("https://quitmate-api.onrender.com/ifgoogleuser").then((res) => {
+    axios.get("https://quitmate-api.fly.dev/ifgoogleuser").then((res) => {
       setIfGoogleUser(res["data"]["google_user"]);
     });
   }, []);

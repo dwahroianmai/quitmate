@@ -22,7 +22,7 @@ function Remove({ f }) {
 
   function removeAccount(e) {
     e.preventDefault();
-    axios.get("https://quitmate-api.onrender.com/removeuser").then((res) => {
+    axios.get("https://quitmate-api.fly.dev/removeuser").then((res) => {
       setMessage("Your account was removed.");
       setRemoved(true);
     });

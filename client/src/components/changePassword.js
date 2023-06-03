@@ -31,7 +31,7 @@ function Password({ f }) {
   function changePassword(e) {
     e.preventDefault();
     axios
-      .post("https://quitmate-api.onrender.com/changepassword", {
+      .post("https://quitmate-api.fly.dev/changepassword", {
         current,
         newP,
         confirm,

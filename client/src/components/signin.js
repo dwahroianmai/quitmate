@@ -9,7 +9,7 @@ import axios from "axios";
 import ThemeContext from "./themeContext";
 import { useGoogleLogin } from "@react-oauth/google";
 
-axios.defaults.baseURL = "https://quitmate-api.onrender.com";
+axios.defaults.baseURL = "https://quitmate-api.fly.dev";
 axios.defaults.withCredentials = true;
 
 const Button = buttonAndSeparator.GoogleButton;
@@ -27,7 +27,7 @@ function SignIn() {
 
   useEffect(() => {
     axios
-      .get("https://quitmate-api.onrender.com/signout")
+      .get("https://quitmate-api.fly.dev/signout")
       .then(() => setSignedOut(true));
   }, []);
 
@@ -36,7 +36,7 @@ function SignIn() {
       const token = response["access_token"];
       console.log(response);
       axios
-        .post(`https://quitmate-api.onrender.com/signin`, { token })
+        .post(`https://quitmate-api.fly.dev/signin`, { token })
         .then((response) => {
           let errorMsg = response.data;
           setError(errorMsg);
@@ -60,7 +60,7 @@ function SignIn() {
   function sendForm(e) {
     e.preventDefault();
     axios
-      .post("https://quitmate-api.onrender.com/signin", { username, password })
+      .post("https://quitmate-api.fly.dev/signin", { username, password })
       .then((response) => {
         let errorMsg = response.data;
         setError(errorMsg);
@@ -71,7 +71,7 @@ function SignIn() {
   }
 
   function demo() {
-    axios.get("https://quitmate-api.onrender.com/demo-user").then((res) => {
+    axios.get("https://quitmate-api.fly.dev/demo-user").then((res) => {
       setUsername("demo_user");
       setPassword(res.data["demo"]);
     });

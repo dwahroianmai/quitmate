@@ -7,7 +7,7 @@ import axios from "axios";
 import LeftPart from "./leftPart";
 import ThemeContext from "./themeContext";
 
-axios.defaults.baseURL = "https://quitmate-api.onrender.com";
+axios.defaults.baseURL = "https://quitmate-api.fly.dev";
 axios.defaults.withCredentials = true;
 
 function SignUp() {
@@ -70,7 +70,7 @@ function SignUp() {
   function sendForm(e) {
     e.preventDefault();
     axios
-      .post("https://quitmate-api.onrender.com/signup", {
+      .post("https://quitmate-api.fly.dev/signup", {
         username,
         password,
         passwordConfirm,
