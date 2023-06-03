@@ -4,6 +4,7 @@ import Footer from "./footer";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import ThemeContext from "./themeContext";
+import Error from "./error";
 
 axios.defaults.baseURL = "https://quitmate-api.fly.dev";
 axios.defaults.withCredentials = true;
@@ -15,6 +16,7 @@ function SmokeData() {
   const [pack, setPack] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("");
+  const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
   const [currencies, setCurrencies] = useState([]);
   const [symbol, setSymbol] = useState("");
@@ -77,7 +79,9 @@ function SmokeData() {
   function sendData(e) {
     e.preventDefault();
     let ms = new Date().getTime();
-    if (checked) {
+    if ((!checked && !date) || !day || !pack || !price || !currency) {
+      setError("Please, set the date and fill out all other fields.");
+    } else if (checked) {
       let now = new Date(parseInt(ms) + 2 * 60 * 60 * 1000)
         .toISOString()
         .slice(0, 19)
@@ -216,6 +220,7 @@ function SmokeData() {
                 );
               })}
             </select>
+            <Error error={error} />
             <button
               type="submit"
               className="w-[60%] h-[60px] appearance-none text-xl bg-transparent rounded-[10px]  border-2 border-green-600"
