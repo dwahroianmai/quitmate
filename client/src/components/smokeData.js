@@ -124,7 +124,7 @@ function SmokeData() {
 
   if (!sent) {
     return (
-      <div>
+      <div className=" overflow-y-scroll">
         <Nav />
         <div className="p-[30px] flex justify-start flex-col items-center h-[80vh] mt-0 mb-0 ml-auto mr-auto rounded-[10px]">
           <p className=" text-center text-xl lg:w-[800px]">
