@@ -78,7 +78,7 @@ function Nav({ settings }) {
 
   return (
     <nav
-      className={` w-screen p-3 flex gap-20 items-center ${center} lg:justify-between ${bg} `}
+      className={` w-screen p-3 flex gap-20 items-center ${center} lg:justify-between ${bg} relative `}
     >
       <a
         href="/"
