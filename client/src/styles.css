@@ -64,12 +64,12 @@ input:not([type="checkbox"]) {
 }
 
 .autofill {
-  box-shadow: 0 0 0 1000px #f0fdf4 inset;
+  box-shadow: 0 0 0 1000px white inset;
   -webkit-text-fill-color: black;
 }
 
 .autofill-dark {
-  box-shadow: 0 0 0 1000px black inset;
+  box-shadow: 0 0 0 1000px #18181b inset;
   -webkit-text-fill-color: #fff;
 }
 
