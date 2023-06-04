@@ -121,11 +121,11 @@ function Dashboard() {
   }
 
   return (
-    <>
+    <div className="overflow-y-scroll flex flex-col items-center gap-8">
       <Nav settings="Settings" />
       <div
         id="dashboard"
-        className=" w-[90vw] lg:w-[60vw] grid grid-cols-4 grid-rows-7 gap-[20px] relative z-[200] lg:max-h-[95vh] pb-10 lg:pb-0"
+        className=" w-[90vw] lg:w-[60vw] grid grid-cols-4 grid-rows-7 gap-[20px] relative z-[200] lg:max-h-[95vh] pb-10 lg:pb-14"
       >
         <Tile
           text="You haven't been smoking for:"
@@ -168,7 +168,7 @@ function Dashboard() {
         />
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -15,7 +15,7 @@ function Health() {
 
   useEffect(() => {
     axios
-      .get("https://quitmate-api.onrender.com/data")
+      .get("http://127.0.0.1:5000/data")
       .then((res) => setData(res.data["data"]));
   }, []);
 
