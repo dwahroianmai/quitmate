@@ -81,32 +81,35 @@ function SmokeData() {
     let ms = new Date().getTime();
     if ((!checked && !date) || !day || !pack || !price || !currency) {
       setError("Please, set the date and fill out all other fields.");
-    } else if (checked) {
-      let now = new Date(parseInt(ms) + 2 * 60 * 60 * 1000)
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
-      axios
-        .post("https://quitmate-api.fly.dev/userdata", {
-          date: now,
-          day,
-          pack,
-          price,
-          currency,
-          symbol,
-        })
-        .then(setSent(true));
+    } else {
+      if (checked) {
+        let now = new Date(parseInt(ms) + 2 * 60 * 60 * 1000)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ");
+        axios
+          .post("https://quitmate-api.fly.dev/userdata", {
+            date: now,
+            day,
+            pack,
+            price,
+            currency,
+            symbol,
+          })
+          .then(setSent(true));
+      } else {
+        axios
+          .post("https://quitmate-api.fly.dev/userdata", {
+            date,
+            day,
+            pack,
+            price,
+            currency,
+            symbol,
+          })
+          .then(setSent(true));
+      }
     }
-    axios
-      .post("https://quitmate-api.fly.dev/userdata", {
-        date,
-        day,
-        pack,
-        price,
-        currency,
-        symbol,
-      })
-      .then(setSent(true));
   }
 
   function check() {
