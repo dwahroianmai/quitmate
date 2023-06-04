@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import ThemeContext from "./themeContext";
 import Error from "./error";
 
-axios.defaults.baseURL = "http://127.0.0.1:5000";
+axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
 function SmokeData() {
@@ -16,7 +16,6 @@ function SmokeData() {
   const [pack, setPack] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("");
-  const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
   const [currencies, setCurrencies] = useState([]);
   const [symbol, setSymbol] = useState("");
@@ -26,6 +25,7 @@ function SmokeData() {
   const [placeholder, setPlaceholder] = useState("");
   const [optionBg, setOptionBg] = useState("");
   const { theme, setTheme } = useContext(ThemeContext);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (theme === "light") {
@@ -39,9 +39,7 @@ function SmokeData() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/authorized", {
-        withCredentials: true,
-      })
+      .get("http://127.0.0.1:5000/authorized", { withCredentials: true })
       .then((response) => setUsername(response.data["username"]));
   }, []);
 
@@ -79,34 +77,37 @@ function SmokeData() {
   function sendData(e) {
     e.preventDefault();
     let ms = new Date().getTime();
-    if ((!checked && !date) || !day || !pack || !price || !currency) {
+    if ((!checked && !date) || !price || !pack || !day || !currency) {
       setError("Please, set the date and fill out all other fields.");
-    } else if (checked) {
-      let now = new Date(parseInt(ms) + 2 * 60 * 60 * 1000)
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
-      axios
-        .post("http://127.0.0.1:5000/userdata", {
-          date: now,
-          day,
-          pack,
-          price,
-          currency,
-          symbol,
-        })
-        .then(setSent(true));
+    } else {
+      if (checked) {
+        let now = new Date(parseInt(ms) + 2 * 60 * 60 * 1000)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ");
+        axios
+          .post("http://127.0.0.1:5000/userdata", {
+            date: now,
+            day,
+            pack,
+            price,
+            currency,
+            symbol,
+          })
+          .then(setSent(true));
+      } else {
+        axios
+          .post("http://127.0.0.1:5000/userdata", {
+            date,
+            day,
+            pack,
+            price,
+            currency,
+            symbol,
+          })
+          .then(setSent(true));
+      }
     }
-    axios
-      .post("http://127.0.0.1:5000/userdata", {
-        date,
-        day,
-        pack,
-        price,
-        currency,
-        symbol,
-      })
-      .then(setSent(true));
   }
 
   function check() {
