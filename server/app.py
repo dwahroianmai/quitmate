@@ -25,6 +25,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 # cors
 app.config["SESSION_COOKIE_SAMESITE"] = "None"
+# TODO: set to true and redeploy, stopped working
 app.config["SESSION_COOKIE_SECURE"] = False
 
 Session(app)
